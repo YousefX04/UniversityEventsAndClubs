@@ -1,0 +1,172 @@
+<div class="register-container">
+  <div class="register-card">
+    <div class="text-center mb-4">
+      <div class="mb-3 icon-container">
+        <i class="bi bi-person-plus-fill"></i>
+      </div>
+      <h2 class="fw-bold">إنشاء حساب جديد</h2>
+      <p class="text-muted mb-4">املأ البيانات للتسجيل في النظام</p>
+    </div>
+
+    <!-- Success Message -->
+    <div class="alert alert-success d-flex align-items-center" *ngIf="success">
+      <i class="bi bi-check-circle-fill me-2"></i>
+      <div>تم التسجيل بنجاح! جاري التحويل لصفحة تسجيل الدخول...</div>
+    </div>
+
+    <!-- Error Message -->
+    <div class="alert alert-danger" *ngIf="error">
+      {{ error }}
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <!-- User Name -->
+      <div class="mb-3">
+        <label for="userName" class="form-label">الاسم الكامل</label>
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="bi bi-person"></i>
+          </span>
+          <input type="text" class="form-control" id="userName" formControlName="userName"
+            placeholder="أدخل اسمك الكامل" [class.is-invalid]="
+              registerForm.get('userName')?.invalid &&
+              registerForm.get('userName')?.touched
+            " />
+        </div>
+        <div class="invalid-feedback d-block" *ngIf="
+            registerForm.get('userName')?.invalid &&
+            registerForm.get('userName')?.touched
+          ">
+          {{ getErrorMessage("userName") }}
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label for="email" class="form-label">البريد الإلكتروني</label>
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="bi bi-envelope"></i>
+          </span>
+          <input type="email" class="form-control" id="email" formControlName="email"
+            placeholder="example@university.edu" [class.is-invalid]="
+              registerForm.get('email')?.invalid &&
+              registerForm.get('email')?.touched
+            " />
+        </div>
+        <div class="invalid-feedback d-block" *ngIf="
+            registerForm.get('email')?.invalid &&
+            registerForm.get('email')?.touched
+          ">
+          {{ getErrorMessage("email") }}
+        </div>
+      </div>
+
+      <!-- Phone -->
+      <div class="mb-3">
+        <label for="phone" class="form-label">رقم الهاتف</label>
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="bi bi-telephone"></i>
+          </span>
+          <input type="tel" class="form-control" id="phone" formControlName="phone" placeholder="01xxxxxxxxx"
+            maxlength="11" [class.is-invalid]="
+              registerForm.get('phone')?.invalid &&
+              registerForm.get('phone')?.touched
+            " />
+        </div>
+        <div class="invalid-feedback d-block" *ngIf="
+            registerForm.get('phone')?.invalid &&
+            registerForm.get('phone')?.touched
+          ">
+          {{ getErrorMessage("phone") }}
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label for="password" class="form-label">كلمة المرور</label>
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="bi bi-lock"></i>
+          </span>
+          <input [type]="showPassword ? 'text' : 'password'" class="form-control" id="password"
+            formControlName="password" placeholder="أدخل كلمة المرور" [class.is-invalid]="
+              registerForm.get('password')?.invalid &&
+              registerForm.get('password')?.touched
+            " />
+          <button class="btn btn-outline-secondary" type="button" (click)="togglePassword()">
+            <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+          </button>
+        </div>
+        <div class="invalid-feedback d-block" *ngIf="
+            registerForm.get('password')?.invalid &&
+            registerForm.get('password')?.touched
+          ">
+          {{ getErrorMessage("password") }}
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="mb-3">
+        <label for="confirmPassword" class="form-label">تأكيد كلمة المرور</label>
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="bi bi-lock-fill"></i>
+          </span>
+          <input [type]="showConfirmPassword ? 'text' : 'password'" class="form-control" id="confirmPassword"
+            formControlName="confirmPassword" placeholder="أعد إدخال كلمة المرور" [class.is-invalid]="
+              registerForm.get('confirmPassword')?.invalid &&
+              registerForm.get('confirmPassword')?.touched
+            " />
+          <button class="btn btn-outline-secondary" type="button" (click)="toggleConfirmPassword()">
+            <i [class]="
+                showConfirmPassword ? 'bi bi-eye-slash' : 'bi bi-eye'
+              "></i>
+          </button>
+        </div>
+        <div class="invalid-feedback d-block" *ngIf="
+            registerForm.get('confirmPassword')?.invalid &&
+            registerForm.get('confirmPassword')?.touched
+          ">
+          {{ getErrorMessage("confirmPassword") }}
+        </div>
+      </div>
+
+      <!-- Role Selection -->
+      <div class="mb-4">
+        <label for="roleName" class="form-label">نوع الحساب</label>
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="bi bi-person-badge"></i>
+          </span>
+          <select class="form-select" id="roleName" formControlName="roleName" [class.is-invalid]="
+              registerForm.get('roleName')?.invalid &&
+              registerForm.get('roleName')?.touched
+            ">
+            <option *ngFor="let role of roles" [value]="role.value">
+              {{ role.label }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="d-grid mb-3">
+        <button type="submit" class="btn btn-primary btn-lg" [disabled]="loading">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          <i *ngIf="!loading" class="bi bi-person-plus me-2"></i>
+          {{ loading ? "جاري التسجيل..." : "إنشاء حساب" }}
+        </button>
+      </div>
+
+      <!-- Login Link -->
+      <div class="text-center">
+        <p class="mb-0">
+          لديك حساب بالفعل؟
+          <a routerLink="/login" class="text-decoration-none">تسجيل الدخول</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

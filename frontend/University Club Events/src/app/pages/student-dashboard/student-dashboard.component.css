@@ -1,0 +1,156 @@
+/* Student dashboard specific styles */
+
+.dashboard-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+}
+
+.stats-card {
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.stats-number {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.stats-label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.club-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(52, 152, 219, 0.1);
+  border-radius: 10px;
+  font-size: 20px;
+}
+
+.welcome-card {
+  background: linear-gradient(135deg, #3498db, #2c3e50);
+  color: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(52, 152, 219, 0.3);
+}
+
+.event-form {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.btn-action {
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.form-control, .form-select {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 15px;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.btn {
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: #3498db;
+  border: none;
+}
+
+.btn-success {
+  background: #27ae60;
+  border: none;
+}
+
+.btn-warning {
+  background: #f39c12;
+  border: none;
+}
+
+.btn-danger {
+  background: #e74c3c;
+  border: none;
+}
+
+.btn-secondary {
+  background: #95a5a6;
+  border: none;
+}
+
+.card {
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+.badge {
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.text-muted {
+  color: #7f8c8d !important;
+}
+
+h2, h4, h5, h6 {
+  color: #2c3e50;
+}
+
+@media (max-width: 768px) {
+  .dashboard-card {
+    padding: 16px;
+  }
+  
+  .stats-number {
+    font-size: 24px;
+  }
+  
+  .welcome-card {
+    padding: 20px;
+  }
+}

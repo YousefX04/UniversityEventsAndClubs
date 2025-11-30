@@ -1,0 +1,180 @@
+<main class="py-5 mt-5">
+  <div class="container">
+    <!-- Welcome Section -->
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="dashboard-card">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h2 class="fw-bold mb-2">مرحباً، {{ currentUser?.name }}!</h2>
+              <p class="text-muted mb-0">إليك نظرة عامة على أنشطتك الأخيرة</p>
+            </div>
+            <div class="text-end">
+              <div class="stats-number">{{ stats.events }}</div>
+              <div class="stats-label">أحداث مسجلة</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-5">
+      <div class="col-md-3 mb-3">
+        <div class="stats-card bg-primary text-white rounded-3">
+          <div class="stats-number text-white">{{ stats.clubs }}</div>
+          <div class="stats-label text-white-50">النوادي المنضم إليها</div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="stats-card bg-success text-white rounded-3">
+          <div class="stats-number text-white">{{ stats.events }}</div>
+          <div class="stats-label text-white-50">الأحداث الحضور</div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="stats-card bg-warning text-white rounded-3">
+          <div class="stats-number text-white">{{ stats.pending }}</div>
+          <div class="stats-label text-white-50">طلبات معلقة</div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="stats-card bg-info text-white rounded-3">
+          <div class="stats-number text-white">{{ stats.points }}</div>
+          <div class="stats-label text-white-50">النقاط المكتسبة</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Events Section -->
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="dashboard-card">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold mb-0">الأحداث المسجلة</h4>
+            <a routerLink="/events" class="btn btn-outline-primary btn-sm">عرض جميع الأحداث</a>
+          </div>
+
+          <div class="row g-3" *ngIf="!loading">
+            <div class="col-12" *ngFor="let event of registeredEvents">
+              <div class="card border-0 bg-light">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                      <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h6 class="fw-bold mb-0">{{ event.title }}</h6>
+                        <span class="badge bg-primary">{{ event.category }}</span>
+                      </div>
+                      <p class="text-muted small mb-2">
+                        <i class="bi bi-calendar me-1"></i>
+                        {{ event.date }} - {{ event.time }}
+                      </p>
+                      <p class="text-muted small mb-0">
+                        <i class="bi bi-geo-alt me-1"></i>
+                        {{ event.location }}
+                      </p>
+                    </div>
+                    <div class="ms-3">
+                      <button class="btn btn-success btn-sm" disabled>
+                        <i class="bi bi-check-circle me-1"></i>
+                        مسجل
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12" *ngIf="registeredEvents.length === 0 && !loading">
+              <p class="text-muted text-center">لا توجد أحداث مسجلة</p>
+            </div>
+            <div class="col-12" *ngIf="loading">
+              <p class="text-muted text-center">جاري تحميل الأحداث...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Manage Events Section -->
+      <div class="col-lg-12 mt-5">
+        <div class="dashboard-card">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold mb-0">الأحداث المسجلة</h4>
+            <!-- Removed the create event button since students shouldn't create events -->
+          </div>
+
+          <!-- Events List -->
+          <div class="row g-3">
+            <div class="col-12" *ngFor="let event of managedEvents">
+              <div class="card border-0 bg-light">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                      <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h6 class="fw-bold mb-0">{{ event.title }}</h6>
+                        <span class="badge bg-primary">{{ event.category }}</span>
+                      </div>
+                      <p class="text-muted small mb-2">{{ event.description }}</p>
+                      <p class="text-muted small mb-2">
+                        <i class="bi bi-calendar me-1"></i>
+                        {{ event.date }} - {{ event.time }}
+                      </p>
+                    </div>
+                    <!-- Removed edit and delete buttons since students shouldn't manage events -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12" *ngIf="managedEvents.length === 0 && !loading">
+              <p class="text-muted text-center">لا توجد أحداث مسجلة</p>
+            </div>
+            <div class="col-12" *ngIf="loading">
+              <p class="text-muted text-center">جاري تحميل الأحداث...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        <!-- My Clubs -->
+        <div class="dashboard-card mb-4">
+          <h5 class="fw-bold mb-3">نواديي</h5>
+
+          <div class="d-flex align-items-center mb-3" *ngFor="let club of myClubs">
+            <div class="club-icon me-3" style="width: 40px; height: 40px;">
+              <i class="bi bi-code-slash text-primary"></i>
+            </div>
+            <div class="flex-grow-1">
+              <h6 class="fw-bold mb-0">{{ club.name }}</h6>
+              <small class="text-muted">عضو_since {{ club.established }}</small>
+            </div>
+            <span class="badge bg-success">عضو</span>
+          </div>
+
+          <a routerLink="/clubs" class="btn btn-outline-primary btn-sm w-100">استكشاف المزيد</a>
+        </div>
+
+        <!-- Upcoming Events -->
+        <div class="dashboard-card">
+          <h5 class="fw-bold mb-3">الأحداث القادمة</h5>
+
+          <div class="mb-3" *ngFor="let event of upcomingEvents">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="fw-bold mb-0 small">{{ event.title }}</h6>
+                <small class="text-muted">{{ event.date }}</small>
+              </div>
+              <span class="badge bg-primary">{{ event.category }}</span>
+            </div>
+          </div>
+
+          <div *ngIf="upcomingEvents.length === 0 && !loading" class="text-center">
+            <p class="text-muted">لا توجد أحداث قادمة</p>
+          </div>
+
+          <a routerLink="/events" class="btn btn-outline-primary btn-sm w-100">عرض التقويم</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

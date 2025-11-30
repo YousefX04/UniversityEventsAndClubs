@@ -1,0 +1,170 @@
+<!-- Page Header -->
+<section class="py-5 mt-5 bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h1 class="display-5 fw-bold mb-3">النوادي الجامعية</h1>
+        <p class="lead text-muted">اكتشف النوادي المختلفة وانضم للنوادي التي تهمك</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Filters -->
+<section class="py-4 bg-white">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <h5 class="fw-bold mb-0">جميع النوادي</h5>
+        <small class="text-muted">{{ filteredClubs.length }} نادي نشط</small>
+      </div>
+      <div class="col-md-6">
+        <div class="d-flex gap-2 justify-content-md-end">
+          <select 
+            class="form-select form-select-sm" 
+            style="width: auto;"
+            [(ngModel)]="selectedCategory"
+            (change)="onFilterChange()">
+            <option value="">جميع الفئات</option>
+            <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+          </select>
+          <select 
+            class="form-select form-select-sm" 
+            style="width: auto;"
+            [(ngModel)]="sortBy"
+            (change)="onSortChange()">
+            <option value="popular">الأكثر شعبية</option>
+            <option value="newest">الأحدث</option>
+            <option value="members">عدد الأعضاء</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Clubs Grid -->
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4" *ngIf="!loading">
+      <div class="col-md-6 col-lg-4" *ngFor="let club of filteredClubs">
+        <div class="card club-card h-100">
+          <div class="card-body text-center">
+            <div class="club-icon mb-3">
+              <i class="bi bi-code-slash display-4 text-primary"></i>
+            </div>
+            <h5 class="card-title">{{ club.name }}</h5>
+            <p class="card-text text-muted">{{ club.description }}</p>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <small class="text-muted">
+                <i class="bi bi-people me-1"></i>
+                {{ club.members }} عضو
+              </small>
+              <span class="badge bg-primary">{{ club.category }}</span>
+            </div>
+            <div class="d-grid gap-2">
+              <a [routerLink]="['/clubs', club.id]" class="btn btn-outline-primary btn-sm">عرض التفاصيل</a>
+              <button 
+                class="btn btn-primary btn-sm" 
+                (click)="openJoinModal(club)">
+                <i class="bi bi-person-plus me-1"></i>
+                طلب الانضمام
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center" *ngIf="loading">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">جاري التحميل...</span>
+      </div>
+    </div>
+
+    <div class="text-center mt-5" *ngIf="!loading && filteredClubs.length === 0">
+      <p class="text-muted">لا توجد نوادي متاحة</p>
+    </div>
+  </div>
+</section>
+
+<!-- Join Request Modal -->
+<div class="modal fade" [class.show]="showJoinModal" [style.display]="showJoinModal ? 'block' : 'none'" id="joinRequestModal" tabindex="-1" *ngIf="showJoinModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">طلب الانضمام للنادي</h5>
+        <button type="button" class="btn-close" (click)="closeJoinModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="clubName" class="form-label">اسم النادي</label>
+            <input type="text" class="form-control" id="clubName" [value]="selectedClub?.name" readonly>
+          </div>
+          <div class="mb-3">
+            <label for="studentName" class="form-label">اسمك</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="studentName" 
+              [(ngModel)]="joinRequest.studentName"
+              name="studentName"
+              placeholder="أدخل اسمك" 
+              required>
+          </div>
+          <div class="mb-3">
+            <label for="studentId" class="form-label">رقم الطالب</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="studentId" 
+              [(ngModel)]="joinRequest.studentId"
+              name="studentId"
+              placeholder="أدخل رقمك الجامعي" 
+              required>
+          </div>
+          <div class="mb-3">
+            <label for="major" class="form-label">التخصص</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="major" 
+              [(ngModel)]="joinRequest.major"
+              name="major"
+              placeholder="أدخل تخصصك" 
+              required>
+          </div>
+          <div class="mb-3">
+            <label for="year" class="form-label">السنة الدراسية</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="year" 
+              [(ngModel)]="joinRequest.year"
+              name="year"
+              placeholder="أدخل سنتك الدراسية" 
+              required>
+          </div>
+          <div class="mb-3">
+            <label for="motivation" class="form-label">لماذا تريد الانضمام لهذا النادي؟</label>
+            <textarea 
+              class="form-control" 
+              id="motivation" 
+              rows="3" 
+              [(ngModel)]="joinRequest.motivation"
+              name="motivation"
+              placeholder="اكتب أسباب اهتمامك بهذا النادي" 
+              required></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeJoinModal()">إلغاء</button>
+        <button type="button" class="btn btn-primary" (click)="submitJoinRequest()">إرسال الطلب</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" *ngIf="showJoinModal" (click)="closeJoinModal()"></div>
+

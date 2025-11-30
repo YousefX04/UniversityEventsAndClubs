@@ -1,0 +1,378 @@
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <!-- Page Header -->
+        <div class="mb-4">
+          <h2 class="fw-bold">
+            <i class="bi bi-person-circle me-2"></i>
+            الملف الشخصي والإعدادات
+          </h2>
+          <p class="text-muted">إدارة معلوماتك الشخصية وتغيير كلمة المرور</p>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <ul class="nav nav-tabs mb-4">
+          <li class="nav-item">
+            <button
+              class="nav-link"
+              [class.active]="activeTab === 'profile'"
+              (click)="setActiveTab('profile')"
+            >
+              <i class="bi bi-person me-2"></i>
+              المعلومات الشخصية
+            </button>
+          </li>
+          <li class="nav-item" *ngIf="passwordChangeEnabled">
+            <button
+              class="nav-link"
+              [class.active]="activeTab === 'password'"
+              (click)="setActiveTab('password')"
+            >
+              <i class="bi bi-lock me-2"></i>
+              تغيير كلمة المرور
+            </button>
+          </li>
+        </ul>
+
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-4">
+            <!-- Success Message -->
+            <div
+              class="alert alert-success d-flex align-items-center mb-4"
+              *ngIf="success"
+            >
+              <i class="bi bi-check-circle-fill me-2"></i>
+              <div>{{ success }}</div>
+            </div>
+
+            <!-- Error Message -->
+            <div class="alert alert-danger mb-4" *ngIf="error">
+              {{ error }}
+            </div>
+
+            <!-- Profile Form -->
+            <form
+              [formGroup]="profileForm"
+              (ngSubmit)="onSubmitProfile()"
+              *ngIf="activeTab === 'profile'"
+            >
+              <div class="row">
+                <!-- Name -->
+                <div class="col-md-6 mb-3">
+                  <label for="name" class="form-label">الاسم الكامل</label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="bi bi-person"></i>
+                    </span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="name"
+                      formControlName="name"
+                      [class.is-invalid]="
+                        profileForm.get('name')?.invalid &&
+                        profileForm.get('name')?.touched
+                      "
+                    />
+                  </div>
+                  <div
+                    class="invalid-feedback d-block"
+                    *ngIf="
+                      profileForm.get('name')?.invalid &&
+                      profileForm.get('name')?.touched
+                    "
+                  >
+                    {{ getErrorMessage("profile", "name") }}
+                  </div>
+                </div>
+
+                <!-- Email (Read-only) -->
+                <div class="col-md-6 mb-3">
+                  <label for="email" class="form-label"
+                    >البريد الإلكتروني</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="bi bi-envelope"></i>
+                    </span>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="email"
+                      formControlName="email"
+                      readonly
+                    />
+                  </div>
+                  <small class="text-muted"
+                    >لا يمكن تغيير البريد الإلكتروني</small
+                  >
+                </div>
+
+                <!-- Phone -->
+                <div class="col-md-6 mb-3">
+                  <label for="phone" class="form-label">رقم الهاتف</label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="bi bi-telephone"></i>
+                    </span>
+                    <input
+                      type="tel"
+                      class="form-control"
+                      id="phone"
+                      formControlName="phone"
+                      placeholder="01xxxxxxxxx"
+                      maxlength="11"
+                      [class.is-invalid]="
+                        profileForm.get('phone')?.invalid &&
+                        profileForm.get('phone')?.touched
+                      "
+                    />
+                  </div>
+                  <div
+                    class="invalid-feedback d-block"
+                    *ngIf="
+                      profileForm.get('phone')?.invalid &&
+                      profileForm.get('phone')?.touched
+                    "
+                  >
+                    {{ getErrorMessage("profile", "phone") }}
+                  </div>
+                </div>
+
+                <!-- Student ID -->
+                <div
+                  class="col-md-6 mb-3"
+                  *ngIf="currentUser?.role === 'student'"
+                >
+                  <label for="studentId" class="form-label"
+                    >الرقم الجامعي</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="bi bi-credit-card"></i>
+                    </span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="studentId"
+                      formControlName="studentId"
+                    />
+                  </div>
+                </div>
+
+                <!-- Major -->
+                <div
+                  class="col-md-6 mb-3"
+                  *ngIf="currentUser?.role === 'student'"
+                >
+                  <label for="major" class="form-label">التخصص</label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="bi bi-book"></i>
+                    </span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="major"
+                      formControlName="major"
+                    />
+                  </div>
+                </div>
+
+                <!-- Year -->
+                <div
+                  class="col-md-6 mb-3"
+                  *ngIf="currentUser?.role === 'student'"
+                >
+                  <label for="year" class="form-label">السنة الدراسية</label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="bi bi-calendar"></i>
+                    </span>
+                    <select
+                      class="form-select"
+                      id="year"
+                      formControlName="year"
+                    >
+                      <option value="">اختر السنة</option>
+                      <option value="1">السنة الأولى</option>
+                      <option value="2">السنة الثانية</option>
+                      <option value="3">السنة الثالثة</option>
+                      <option value="4">السنة الرابعة</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="d-flex justify-content-end mt-4">
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  [disabled]="loading || profileForm.invalid"
+                >
+                  <span
+                    *ngIf="loading"
+                    class="spinner-border spinner-border-sm me-2"
+                  ></span>
+                  <i *ngIf="!loading" class="bi bi-save me-2"></i>
+                  {{ loading ? "جاري الحفظ..." : "حفظ التغييرات" }}
+                </button>
+              </div>
+            </form>
+
+            <!-- Password Form -->
+            <form
+              [formGroup]="passwordForm"
+              (ngSubmit)="onSubmitPassword()"
+              *ngIf="activeTab === 'password'"
+            >
+              <!-- Current Password -->
+              <div class="mb-3">
+                <label for="currentPassword" class="form-label"
+                  >كلمة المرور الحالية</label
+                >
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-lock"></i>
+                  </span>
+                  <input
+                    [type]="showCurrentPassword ? 'text' : 'password'"
+                    class="form-control"
+                    id="currentPassword"
+                    formControlName="currentPassword"
+                    [class.is-invalid]="
+                      passwordForm.get('currentPassword')?.invalid &&
+                      passwordForm.get('currentPassword')?.touched
+                    "
+                  />
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    (click)="toggleCurrentPassword()"
+                  >
+                    <i
+                      [class]="
+                        showCurrentPassword ? 'bi bi-eye-slash' : 'bi bi-eye'
+                      "
+                    ></i>
+                  </button>
+                </div>
+                <div
+                  class="invalid-feedback d-block"
+                  *ngIf="
+                    passwordForm.get('currentPassword')?.invalid &&
+                    passwordForm.get('currentPassword')?.touched
+                  "
+                >
+                  {{ getErrorMessage("password", "currentPassword") }}
+                </div>
+              </div>
+
+              <!-- New Password -->
+              <div class="mb-3">
+                <label for="newPassword" class="form-label"
+                  >كلمة المرور الجديدة</label
+                >
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-lock-fill"></i>
+                  </span>
+                  <input
+                    [type]="showNewPassword ? 'text' : 'password'"
+                    class="form-control"
+                    id="newPassword"
+                    formControlName="newPassword"
+                    [class.is-invalid]="
+                      passwordForm.get('newPassword')?.invalid &&
+                      passwordForm.get('newPassword')?.touched
+                    "
+                  />
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    (click)="toggleNewPassword()"
+                  >
+                    <i
+                      [class]="
+                        showNewPassword ? 'bi bi-eye-slash' : 'bi bi-eye'
+                      "
+                    ></i>
+                  </button>
+                </div>
+                <div
+                  class="invalid-feedback d-block"
+                  *ngIf="
+                    passwordForm.get('newPassword')?.invalid &&
+                    passwordForm.get('newPassword')?.touched
+                  "
+                >
+                  {{ getErrorMessage("password", "newPassword") }}
+                </div>
+              </div>
+
+              <!-- Confirm Password -->
+              <div class="mb-3">
+                <label for="confirmPassword" class="form-label"
+                  >تأكيد كلمة المرور</label
+                >
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-shield-lock"></i>
+                  </span>
+                  <input
+                    [type]="showConfirmPassword ? 'text' : 'password'"
+                    class="form-control"
+                    id="confirmPassword"
+                    formControlName="confirmPassword"
+                    [class.is-invalid]="
+                      passwordForm.get('confirmPassword')?.invalid &&
+                      passwordForm.get('confirmPassword')?.touched
+                    "
+                  />
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    (click)="toggleConfirmPassword()"
+                  >
+                    <i
+                      [class]="
+                        showConfirmPassword ? 'bi bi-eye-slash' : 'bi bi-eye'
+                      "
+                    ></i>
+                  </button>
+                </div>
+                <div
+                  class="invalid-feedback d-block"
+                  *ngIf="
+                    passwordForm.get('confirmPassword')?.invalid &&
+                    passwordForm.get('confirmPassword')?.touched
+                  "
+                >
+                  {{ getErrorMessage("password", "confirmPassword") }}
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="d-flex justify-content-end mt-4">
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  [disabled]="loading || passwordForm.invalid"
+                >
+                  <span
+                    *ngIf="loading"
+                    class="spinner-border spinner-border-sm me-2"
+                  ></span>
+                  <i *ngIf="!loading" class="bi bi-key me-2"></i>
+                  {{ loading ? "جاري التغيير..." : "تغيير كلمة المرور" }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

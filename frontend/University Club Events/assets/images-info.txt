@@ -1,0 +1,21 @@
+صور مطلوبة للمشروع:
+
+1. hero-university.jpg - صورة للجامعة أو الطلاب (1200x600px)
+2. event-tech.jpg - صورة لمؤتمر تكنولوجيا (400x300px)
+3. event-sports.jpg - صورة لبطولة رياضية (400x300px)
+4. event-culture.jpg - صورة لمهرجان ثقافي (400x300px)
+5. event-workshop.jpg - صورة لورشة عمل (400x300px)
+6. event-ai.jpg - صورة لورشة ذكاء اصطناعي (400x300px)
+7. event-music.jpg - صورة لحفل موسيقي (400x300px)
+
+يمكن استخدام صور من:
+- Unsplash.com
+- Pexels.com
+- Pixabay.com
+
+أو يمكن استخدام خدمات placeholder مثل:
+- placeholder.com
+- picsum.photos
+
+مثال للاستخدام:
+<img src="https://picsum.photos/400/300?random=1" alt="Event Image">

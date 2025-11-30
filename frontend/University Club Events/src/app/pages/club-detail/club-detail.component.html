@@ -1,0 +1,55 @@
+<section class="py-5 mt-5" *ngIf="club && !loading">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <h1 class="fw-bold mb-3">{{ club.name }}</h1>
+        <p class="lead text-muted mb-4">{{ club.description }}</p>
+        
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="fw-bold mb-3">معلومات النادي</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <i class="bi bi-people me-2 text-primary"></i>
+                <strong>الأعضاء:</strong> {{ club.members }}
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-person me-2 text-primary"></i>
+                <strong>القائد:</strong> {{ club.leader }}
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-calendar me-2 text-primary"></i>
+                <strong>تاريخ التأسيس:</strong> {{ club.established }}
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-tag me-2 text-primary"></i>
+                <strong>الفئة:</strong> {{ club.category }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="fw-bold mb-3">انضم للنادي</h5>
+            <p class="text-muted mb-3">
+              {{ club.members }} عضو نشط
+            </p>
+            <a routerLink="/clubs" class="btn btn-primary btn-lg w-100">
+              <i class="bi bi-person-plus me-2"></i>طلب الانضمام
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="text-center py-5" *ngIf="loading">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">جاري التحميل...</span>
+  </div>
+</div>
+

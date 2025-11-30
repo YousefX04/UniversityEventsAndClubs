@@ -1,0 +1,58 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\ahmed\\OneDrive\\Desktop\\Backend\\UniversityEventsAndClubs\\UnviClubManagement\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ahmed\\OneDrive\\Desktop\\Backend\\UniversityEventsAndClubs\\UnviClubManagement\\UnviClubManagement\\Migrations\\20251129172405_FirstMigration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:UnviClubManagement\\Migrations\\20251129172405_FirstMigration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D2EB8452-258E-4379-84CC-98384ECCAAAC}|UnviClubManagement\\UnviClubManagement.csproj|c:\\users\\ahmed\\onedrive\\desktop\\backend\\universityeventsandclubs\\unviclubmanagement\\unviclubmanagement\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{D2EB8452-258E-4379-84CC-98384ECCAAAC}|UnviClubManagement\\UnviClubManagement.csproj|solutionrelative:unviclubmanagement\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{fbcae063-e2c0-4ab1-a516-996ea3dafb72}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "20251129172405_FirstMigration.cs",
+              "DocumentMoniker": "C:\\Users\\ahmed\\OneDrive\\Desktop\\Backend\\UniversityEventsAndClubs\\UnviClubManagement\\UnviClubManagement\\Migrations\\20251129172405_FirstMigration.cs",
+              "RelativeDocumentMoniker": "UnviClubManagement\\Migrations\\20251129172405_FirstMigration.cs",
+              "ToolTip": "C:\\Users\\ahmed\\OneDrive\\Desktop\\Backend\\UniversityEventsAndClubs\\UnviClubManagement\\UnviClubManagement\\Migrations\\20251129172405_FirstMigration.cs",
+              "RelativeToolTip": "UnviClubManagement\\Migrations\\20251129172405_FirstMigration.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-29T17:24:05.915Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\ahmed\\OneDrive\\Desktop\\Backend\\UniversityEventsAndClubs\\UnviClubManagement\\UnviClubManagement\\appsettings.json",
+              "RelativeDocumentMoniker": "UnviClubManagement\\appsettings.json",
+              "ToolTip": "C:\\Users\\ahmed\\OneDrive\\Desktop\\Backend\\UniversityEventsAndClubs\\UnviClubManagement\\UnviClubManagement\\appsettings.json",
+              "RelativeToolTip": "UnviClubManagement\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAB0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-29T17:23:34.619Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

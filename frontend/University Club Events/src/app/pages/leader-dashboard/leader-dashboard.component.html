@@ -1,0 +1,152 @@
+<div class="container-fluid">
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading dashboard...</p>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div *ngIf="!loading">
+
+    <!-- Welcome Section -->
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="dashboard-card p-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h2 class="fw-bold mb-2">Welcome, {{ currentUser?.name }}!</h2>
+              <p class="text-muted mb-0">
+                Club Leader Dashboard <span *ngIf="myClub">- {{ myClub.name }}</span>
+              </p>
+            </div>
+            <div class="text-end" *ngIf="myClub">
+              <div class="stats-number">{{ stats.members }}</div>
+              <div class="stats-label">Club Members</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Club Management Section -->
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="dashboard-card p-3 d-flex justify-content-between align-items-center">
+          <div>
+            <h4 class="fw-bold mb-0">Club Management</h4>
+            <p class="text-muted mb-0 mt-2" *ngIf="!myClub">You don't have a club yet. Create a new club.</p>
+            <p class="text-muted mb-0 mt-2" *ngIf="myClub">{{ myClub.description }}</p>
+          </div>
+          <div>
+            <button *ngIf="!myClub" class="btn btn-primary" (click)="openCreateClubModal()">
+              <i class="bi bi-plus-circle me-2"></i>Create Club
+            </button>
+            <button *ngIf="myClub" class="btn btn-outline-primary" (click)="openEditClubModal()">
+              <i class="bi bi-pencil me-2"></i>Edit Club
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-5">
+      <div class="col-md-3 mb-3" *ngFor="let stat of [
+        {value: stats.members, label: 'Club Members', bg: 'bg-primary'},
+        {value: stats.events, label: 'Events Created', bg: 'bg-success'},
+        {value: stats.pendingRequests, label: 'Pending Requests', bg: 'bg-warning'},
+        {value: stats.attendees, label: 'Total Attendance', bg: 'bg-info'}
+      ]">
+        <div class="stats-card text-white rounded-3 {{ stat.bg }} p-3 text-center">
+          <div class="stats-number text-white">{{ stat.value }}</div>
+          <div class="stats-label text-white-50">{{ stat.label }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Join Requests Section -->
+    <div class="row mb-5" *ngIf="myClub">
+      <div class="col-12">
+        <div class="dashboard-card p-3">
+          <h4 class="fw-bold mb-4">Club Join Requests</h4>
+          <div class="table-responsive" *ngIf="joinRequests.length > 0">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>User ID</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let request of joinRequests">
+                  <td>{{ request.studentName }}</td>
+                  <td>{{ request.studentId }}</td>
+                  <td><span class="badge bg-warning">Pending</span></td>
+                  <td>
+                    <button class="btn btn-success btn-sm me-2" (click)="approveJoinRequest(request)">Approve</button>
+                    <button class="btn btn-danger btn-sm" (click)="rejectJoinRequest(request)">Reject</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p *ngIf="!joinRequests?.length" class="text-muted">No pending join requests</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- My Events Section -->
+    <div class="row">
+      <div class="col-12">
+        <div class="dashboard-card p-3">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold mb-0">My Events</h4>
+            <button class="btn btn-outline-primary btn-sm" (click)="openCreateEventModal()" *ngIf="myClub">
+              <i class="bi bi-plus-circle"></i> Create New Event
+            </button>
+          </div>
+
+          <div class="row g-3" *ngIf="myEvents.length > 0; else noEvents">
+            <div class="col-md-6" *ngFor="let event of myEvents; trackBy: trackByEventId">
+              <div class="card border-0 bg-light">
+                <div class="card-body">
+                  <h6 class="fw-bold mb-2">{{ event.title }}</h6>
+                  <p class="text-muted small mb-2">
+                    <i class="bi bi-calendar me-1"></i>{{ event.date }} - {{ event.time }}
+                  </p>
+                  <p class="text-muted small mb-3">
+                    <i class="bi bi-geo-alt me-1"></i>{{ event.location }}
+                  </p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="badge bg-primary">{{ event.registered }}/{{ event.capacity }} Registered</span>
+                    <a [routerLink]="['/attendance', event.id]" class="btn btn-outline-primary btn-sm">
+                      Track Attendance
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <ng-template #noEvents>
+            <p class="text-muted text-center">No events created</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirmation Section -->
+    <div *ngIf="!loading && myClub" class="alert alert-success mt-3">
+      <h5>Club Data Loaded Successfully</h5>
+      <p>Club Name: {{ myClub.name }}</p>
+      <p>Club Description: {{ myClub.description }}</p>
+      <p>Club Members: {{ myClub.members }}</p>
+      <p>Club Status: {{ myClub.status }}</p>
+    </div>
+  </div>
+</div>

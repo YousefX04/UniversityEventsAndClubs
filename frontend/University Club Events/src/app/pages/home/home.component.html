@@ -1,0 +1,131 @@
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="row align-items-center min-vh-100">
+      <div class="col-lg-6">
+        <h1 class="display-4 fw-bold text-white mb-4 animate__animated animate__fadeInUp">
+          مرحباً بك في نظام إدارة الفعاليات والنوادي الجامعية
+        </h1>
+        <p class="lead text-white-50 mb-4 animate__animated animate__fadeInUp animate__delay-1s">
+          اكتشف الأحداث القادمة وانضم للنوادي التي تهمك. اجعل تجربتك الجامعية أكثر ثراءً وإثارة
+        </p>
+        <div class="d-flex gap-3 flex-wrap animate__animated animate__fadeInUp animate__delay-2s">
+          <a routerLink="/events" class="btn btn-light btn-lg px-4 py-3 fw-bold shadow-lg">
+            <i class="bi bi-calendar3 me-2"></i>
+            استكشف الأحداث
+          </a>
+          <a routerLink="/clubs" class="btn btn-outline-light btn-lg px-4 py-3 fw-bold shadow-lg">
+            <i class="bi bi-people me-2"></i>
+            الانضمام للنوادي
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="hero-image">
+          <div
+            class="university-image-placeholder bg-light d-flex align-items-center justify-content-center rounded-3 shadow"
+            style="height: 400px;">
+            <span class="text-muted">University Image</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Events -->
+<section class="py-5">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-12 text-center mb-5">
+        <h2 class="fw-bold mb-3 position-relative d-inline-block px-4">
+          <span class="position-relative z-index-1">أحداث مميزة</span>
+          <span class="heading-underline"></span>
+        </h2>
+        <p class="text-muted mx-auto" style="max-width: 600px;">اكتشف أهم الأحداث القادمة وانضم إليها لتثري تجربتك
+          الجامعية</p>
+      </div>
+    </div>
+
+    <div class="row g-4" *ngIf="!loading">
+      <div class="col-md-6 col-lg-4" *ngFor="let event of featuredEvents">
+        <div class="card event-card h-100">
+          <div class="event-image-placeholder bg-light d-flex align-items-center justify-content-center"
+            style="height: 200px;">
+            <span class="text-muted">Event Image</span>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <span class="badge bg-gradient-primary">{{ event.category }}</span>
+              <small class="text-muted">
+                <i class="bi bi-calendar me-1"></i>
+                {{ event.date }}
+              </small>
+            </div>
+            <h5 class="card-title fw-bold mb-3">{{ event.title }}</h5>
+            <p class="card-text text-muted mb-4">{{ event.description }}</p>
+            <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
+              <small class="text-muted">
+                <i class="bi bi-geo-alt me-1"></i>
+                {{ event.location }}
+              </small>
+              <a [routerLink]="['/events', event.id]" class="btn btn-primary btn-sm px-3 py-2 fw-bold">التفاصيل</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center" *ngIf="loading">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">جاري التحميل...</span>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <a routerLink="/events" class="btn btn-outline-primary">عرض جميع الأحداث</a>
+    </div>
+  </div>
+</section>
+
+<!-- Popular Clubs -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-12 text-center mb-5">
+        <h2 class="fw-bold mb-3 position-relative d-inline-block px-4">
+          <span class="position-relative z-index-1">النوادي الشائعة</span>
+          <span class="heading-underline"></span>
+        </h2>
+        <p class="text-muted mx-auto" style="max-width: 600px;">اكتشف النوادي الأكثر نشاطاً وانضم إليها لتكون جزءاً من
+          المجتمع الجامعي</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4" *ngFor="let club of popularClubs">
+        <div class="card club-card h-100">
+          <div class="card-body text-center">
+            <div class="club-icon mb-3">
+              <i class="bi bi-code-slash display-4 text-primary"></i>
+            </div>
+            <h5 class="card-title">{{ club.name }}</h5>
+            <p class="card-text text-muted">{{ club.description }}</p>
+            <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
+              <small class="text-muted">
+                <i class="bi bi-people me-1"></i>
+                {{ club.members }} عضو
+              </small>
+              <a [routerLink]="['/clubs', club.id]" class="btn btn-outline-primary btn-sm px-3 py-2 fw-bold">انضم
+                الآن</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <a routerLink="/clubs" class="btn btn-outline-primary">عرض جميع النوادي</a>
+    </div>
+  </div>
+</section>

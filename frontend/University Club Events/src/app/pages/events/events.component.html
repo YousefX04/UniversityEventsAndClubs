@@ -1,0 +1,100 @@
+<!-- Page Header -->
+<section class="py-5 mt-5 bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h1 class="display-5 fw-bold mb-3">الأحداث الجامعية</h1>
+        <p class="lead text-muted">اكتشف الأحداث والفعاليات المثيرة التي تنتظرك</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Filters -->
+<section class="py-4 bg-white">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <h5 class="fw-bold mb-0">جميع الأحداث</h5>
+        <small class="text-muted">{{ filteredEvents.length }} حدث قادم</small>
+      </div>
+      <div class="col-md-6">
+        <div class="d-flex gap-2 justify-content-md-end flex-wrap">
+          <select class="form-select form-select-sm" style="width: auto;" [(ngModel)]="selectedCategory"
+            (change)="onFilterChange()">
+            <option value="">جميع الفئات</option>
+            <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+          </select>
+          <select class="form-select form-select-sm" style="width: auto;" [(ngModel)]="selectedClub"
+            (change)="onFilterChange()">
+            <option value="">جميع النوادي</option>
+            <option *ngFor="let club of clubs" [value]="club">{{ club }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Events Grid -->
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4" *ngIf="!loading">
+      <div class="col-md-6 col-lg-4" *ngFor="let event of filteredEvents">
+        <div class="card event-card h-100">
+          <div class="event-image-placeholder bg-light d-flex align-items-center justify-content-center"
+            style="height: 200px;">
+            <span class="text-muted">Event Image</span>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="badge bg-primary">{{ event.category }}</span>
+              <small class="text-muted">
+                <i class="bi bi-calendar me-1"></i>
+                {{ event.date }}
+              </small>
+            </div>
+            <h5 class="card-title">{{ event.title }}</h5>
+            <p class="card-text text-muted">{{ event.description }}</p>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <small class="text-muted">
+                <i class="bi bi-geo-alt me-1"></i>
+                {{ event.location }}
+              </small>
+              <span class="badge" [class.bg-success]="event.price === 0" [class.bg-danger]="event.price > 0">
+                {{ event.price === 0 ? 'مجاني' : 'مدفوع - ' + event.price + ' ريال' }}
+              </span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <small class="text-muted">
+                <i class="bi bi-people me-1"></i>
+                {{ event.registered }}/{{ event.capacity }} مسجل
+              </small>
+              <div class="btn-group btn-group-sm">
+                <a [routerLink]="['/events', event.id]" class="btn btn-outline-primary">التفاصيل</a>
+                <button class="btn" [class.btn-primary]="!isRegistered(event)" [class.btn-success]="isRegistered(event)"
+                  [disabled]="isRegistered(event) || event.registered >= event.capacity"
+                  (click)="registerForEvent(event)">
+                  <span *ngIf="isRegistered(event)">
+                    <i class="bi bi-check-circle me-1"></i>مسجل
+                  </span>
+                  <span *ngIf="!isRegistered(event)">RSVP</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center" *ngIf="loading">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">جاري التحميل...</span>
+      </div>
+    </div>
+
+    <div class="text-center mt-5" *ngIf="!loading && filteredEvents.length === 0">
+      <p class="text-muted">لا توجد أحداث متاحة</p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,281 @@
+<main class="py-5 mt-5">
+  <div class="container">
+    <!-- Welcome Section -->
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="welcome-card">
+          <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <div>
+              <h2 class="fw-bold mb-2">مرحباً، {{ currentUser?.name }}!</h2>
+              <p class="mb-0">لوحة تحكم المسؤول</p>
+            </div>
+            <div class="text-end mt-3 mt-md-0">
+              <div class="stats-number">{{ stats.pendingEvents }}</div>
+              <div class="stats-label">أحداث معلقة</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-5">
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div class="stats-card bg-primary text-white">
+          <div class="stats-number text-white">{{ stats.totalEvents }}</div>
+          <div class="stats-label text-white-50">إجمالي الأحداث</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div class="stats-card bg-success text-white">
+          <div class="stats-number text-white">{{ stats.totalClubs }}</div>
+          <div class="stats-label text-white-50">إجمالي النوادي</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div class="stats-card bg-warning text-white">
+          <div class="stats-number text-white">{{ stats.pendingEvents }}</div>
+          <div class="stats-label text-white-50">أحداث معلقة</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div class="stats-card bg-info text-white">
+          <div class="stats-number text-white">{{ stats.pendingClubs }}</div>
+          <div class="stats-label text-white-50">طلبات إنشاء نوادي</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pending Events -->
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="dashboard-card">
+          <h4 class="fw-bold mb-4">الأحداث المعلقة للمراجعة</h4>
+
+          <div class="row g-4" *ngIf="!loading">
+            <div class="col-lg-6 col-md-12" *ngFor="let event of pendingEvents">
+              <div class="event-card">
+                <div class="card-body">
+                  <h6 class="fw-bold mb-3">{{ event.title }}</h6>
+                  <p class="text-muted small mb-3">{{ event.description }}</p>
+                  <div class="d-flex justify-content-between align-items-center mb-4">
+                    <small class="text-muted">
+                      <i class="bi bi-calendar me-1"></i>
+                      {{ event.date }}
+                    </small>
+                    <small class="text-muted">
+                      <i class="bi bi-clock me-1"></i>
+                      {{ event.time }}
+                    </small>
+                  </div>
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-success btn-sm px-3" (click)="approveEvent(event)">
+                      <i class="bi bi-check-circle me-1"></i> موافقة
+                    </button>
+                    <button class="btn btn-danger btn-sm px-3" (click)="rejectEvent(event)">
+                      <i class="bi bi-x-circle me-1"></i> رفض
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12" *ngIf="pendingEvents.length === 0">
+              <div class="text-center py-5">
+                <i class="bi bi-calendar-x display-5 text-muted mb-3"></i>
+                <p class="text-muted mb-0">لا توجد أحداث معلقة</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Club Creation Requests -->
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="dashboard-card">
+          <h4 class="fw-bold mb-4">طلبات إنشاء نوادي جديدة</h4>
+
+          <div class="table-responsive" *ngIf="clubRequests.length > 0">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>اسم النادي</th>
+                  <th>الوصف</th>
+                  <th>الفئة</th>
+                  <th>القائد</th>
+                  <th>الأعضاء المتوقعين</th>
+                  <th class="text-center">الإجراءات</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let request of clubRequests">
+                  <td>
+                    <div class="fw-medium">{{ request.name }}</div>
+                  </td>
+                  <td>
+                    <div class="text-muted"
+                      style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                      title="{{ request.description }}">{{ request.description }}</div>
+                  </td>
+                  <td>
+                    <span class="badge bg-primary">{{ request.category }}</span>
+                  </td>
+                  <td>{{ request.leader }}</td>
+                  <td>{{ request.expectedMembers }}</td>
+                  <td class="text-center">
+                    <button class="btn btn-success btn-sm me-2" (click)="approveClubRequest(request)">
+                      <i class="bi bi-check-circle me-1"></i> موافقة
+                    </button>
+                    <button class="btn btn-danger btn-sm" (click)="rejectClubRequest(request)">
+                      <i class="bi bi-x-circle me-1"></i> رفض
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="text-center py-4" *ngIf="clubRequests.length === 0">
+            <i class="bi bi-people display-5 text-muted mb-3"></i>
+            <p class="text-muted mb-0">لا توجد طلبات إنشاء نوادي</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pending Club Edit Requests -->
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="dashboard-card">
+          <h4 class="fw-bold mb-4">طلبات تعديل النوادي المعلقة</h4>
+
+          <div class="table-responsive" *ngIf="pendingClubEdits.length > 0">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>اسم النادي</th>
+                  <th>التعديل المقترح</th>
+                  <th>القائد</th>
+                  <th>التاريخ</th>
+                  <th class="text-center">الإجراءات</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let edit of pendingClubEdits">
+                  <td>
+                    <div class="fw-medium">{{ edit.clubName }}</div>
+                  </td>
+                  <td>
+                    <div class="mb-1"><strong>الاسم:</strong> {{ edit.currentName }} → {{ edit.newName }}</div>
+                    <div><strong>الوصف:</strong> {{ edit.currentDescription }} → {{ edit.newDescription }}</div>
+                  </td>
+                  <td>{{ edit.requestedBy }}</td>
+                  <td>{{ edit.requestedDate | date:'short' }}</td>
+                  <td class="text-center">
+                    <button class="btn btn-success btn-sm me-2" (click)="approveClubEdit(edit)">
+                      <i class="bi bi-check-circle me-1"></i> موافقة
+                    </button>
+                    <button class="btn btn-danger btn-sm" (click)="rejectClubEdit(edit)">
+                      <i class="bi bi-x-circle me-1"></i> رفض
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="text-center py-4" *ngIf="pendingClubEdits.length === 0">
+            <i class="bi bi-pencil-square display-5 text-muted mb-3"></i>
+            <p class="text-muted mb-0">لا توجد طلبات تعديل معلقة</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- All Clubs Management -->
+    <div class="row">
+      <div class="col-12">
+        <div class="dashboard-card">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold mb-0">إدارة النوادي</h4>
+          </div>
+
+          <div class="table-responsive" *ngIf="allClubs.length > 0">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>اسم النادي</th>
+                  <th>الوصف</th>
+                  <th>القائد</th>
+                  <th class="text-center">الإجراءات</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let club of allClubs">
+                  <td>{{ club.id }}</td>
+                  <td>
+                    <div class="fw-medium">{{ club.clubName }}</div>
+                  </td>
+                  <td>
+                    <div class="text-muted"
+                      style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                      title="{{ club.description }}">{{ club.description }}</div>
+                  </td>
+                  <td>{{ club.userName }}</td>
+                  <td class="text-center">
+                    <button class="btn btn-warning btn-sm me-2" (click)="openEditClubModal(club)">
+                      <i class="bi bi-pencil me-1"></i> تعديل
+                    </button>
+                    <button class="btn btn-danger btn-sm" (click)="deleteClub(club)">
+                      <i class="bi bi-trash me-1"></i> حذف
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="text-center py-4" *ngIf="allClubs.length === 0">
+            <i class="bi bi-people display-5 text-muted mb-3"></i>
+            <p class="text-muted mb-0">لا توجد نوادي</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Edit Club Modal -->
+<div class="modal fade" [class.show]="showEditClubModal" [style.display]="showEditClubModal ? 'block' : 'none'"
+  tabindex="-1" *ngIf="showEditClubModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">تعديل النادي</h5>
+        <button type="button" class="btn-close" (click)="closeEditClubModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-4">
+            <label for="editClubName" class="form-label">اسم النادي <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="editClubName" [(ngModel)]="editClub.ClubName"
+              name="editClubName" required placeholder="أدخل اسم النادي">
+          </div>
+          <div class="mb-4">
+            <label for="editClubDesc" class="form-label">الوصف <span class="text-danger">*</span></label>
+            <textarea class="form-control" id="editClubDesc" rows="4" [(ngModel)]="editClub.Desc" name="editClubDesc"
+              required placeholder="أدخل وصف النادي"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeEditClubModal()">
+          <i class="bi bi-x-circle me-1"></i> إلغاء
+        </button>
+        <button type="button" class="btn btn-primary px-4" (click)="updateClub()">
+          <i class="bi bi-check-circle me-1"></i> حفظ التغييرات
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" [class.show]="showEditClubModal" *ngIf="showEditClubModal"></div>

@@ -1,0 +1,86 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="text-center mb-4">
+      <div class="mb-3 icon-container">
+        <i class="bi bi-person-circle"></i>
+      </div>
+      <h2 class="fw-bold">تسجيل الدخول</h2>
+      <p class="text-muted mb-4">أدخل بياناتك للوصول إلى حسابك</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="email" class="form-label">البريد الإلكتروني</label>
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="bi bi-envelope"></i>
+          </span>
+          <input type="email" class="form-control" id="email" formControlName="email"
+            placeholder="أدخل بريدك الإلكتروني" [class.is-invalid]="
+              loginForm.get('email')?.invalid &&
+              loginForm.get('email')?.touched
+            " />
+          <div class="invalid-feedback" *ngIf="
+              loginForm.get('email')?.invalid &&
+              loginForm.get('email')?.touched
+            ">
+            يرجى إدخال بريد إلكتروني صحيح
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="password" class="form-label">كلمة المرور</label>
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="bi bi-lock"></i>
+          </span>
+          <input [type]="showPassword ? 'text' : 'password'" class="form-control" id="password"
+            formControlName="password" placeholder="أدخل كلمة المرور" [class.is-invalid]="
+              loginForm.get('password')?.invalid &&
+              loginForm.get('password')?.touched
+            " />
+          <button class="btn btn-outline-secondary" type="button" (click)="togglePassword()">
+            <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+          </button>
+          <div class="invalid-feedback" *ngIf="
+              loginForm.get('password')?.invalid &&
+              loginForm.get('password')?.touched
+            ">
+            يرجى إدخال كلمة المرور
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="rememberMe" formControlName="rememberMe" />
+          <label class="form-check-label" for="rememberMe">
+            تذكرني
+          </label>
+        </div>
+      </div>
+
+      <div class="alert alert-danger" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <div class="d-grid mb-4">
+        <button type="submit" class="btn btn-primary btn-lg" [disabled]="loginForm.invalid || loading">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          <i *ngIf="!loading" class="bi bi-box-arrow-in-right me-2"></i>
+          {{ loading ? "جاري تسجيل الدخول..." : "تسجيل الدخول" }}
+        </button>
+      </div>
+
+      <div class="text-center">
+        <a href="#" class="text-decoration-none">نسيت كلمة المرور؟</a>
+        <hr class="my-4" />
+        <p class="mb-0">
+          ليس لديك حساب؟
+          <a routerLink="/register" class="text-decoration-none">إنشاء حساب جديد</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>
